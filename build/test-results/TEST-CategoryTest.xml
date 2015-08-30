@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="CategoryTest" tests="7" skipped="0" failures="0" errors="0" timestamp="2015-08-30T02:21:53" hostname="Jen-Quiross-MacBook-Pro.local" time="6.977">
+  <properties/>
+  <testcase name="equals_returnsTrueIfNamesAretheSame" classname="CategoryTest" time="2.247"/>
+  <testcase name="getTasks_returnsAllTasks_ArrayList" classname="CategoryTest" time="0.69"/>
+  <testcase name="delete_deletesAllTasksAndListsAssoicationes" classname="CategoryTest" time="0.394"/>
+  <testcase name="all_emptyAtFirst" classname="CategoryTest" time="0.081"/>
+  <testcase name="addTask_addsTaskToCategory" classname="CategoryTest" time="1.343"/>
+  <testcase name="find_findCategoryInDatabase_true" classname="CategoryTest" time="0.812"/>
+  <testcase name="save_savesIntoDatabase_true" classname="CategoryTest" time="1.401"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

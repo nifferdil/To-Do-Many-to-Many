@@ -130,7 +130,8 @@ public class App {
   post("/tasks", (request, response) -> {
     HashMap<String, Object> model = new HashMap<String, Object>();
     String description = request.queryParams("description");
-    Task newTask = new Task(description, false);
+    String duedate = request.queryParams("duedate");
+    Task newTask = new Task(description, false, duedate);
     newTask.save();
     response.redirect("/tasks");
     return null;

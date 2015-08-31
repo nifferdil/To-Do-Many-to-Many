@@ -6,6 +6,7 @@ public class Task {
   private int id;
   private String description;
   private boolean iscomplete;
+  private String duedate;
 
   public int getId() {
     return id;
@@ -15,9 +16,14 @@ public class Task {
     return description;
   }
 
-  public Task(String description, boolean iscomplete) {
+  public Task(String description, boolean iscomplete, String duedate) {
     this.description = description;
     this.iscomplete = false;
+    this.duedate = duedate;
+  }
+  
+  public String getDueDate(){
+    return duedate;
   }
 
   @Override
@@ -73,7 +79,7 @@ public class Task {
 
 
   public static List<Task> all() {
-    String sql = "SELECT id, description FROM tasks WHERE iscomplete = false";
+    String sql = "SELECT id, description, duedate FROM tasks WHERE iscomplete = false ORDER BY duedate";
     try(Connection con = DB.sql2o.open()) {
       return con.createQuery(sql).executeAndFetch(Task.class);
     }
@@ -81,14 +87,23 @@ public class Task {
 
   public void save() {
     try(Connection con = DB.sql2o.open()) {
-      String sql = "INSERT INTO tasks(description, iscomplete) VALUES (:description, :iscomplete)";
+      String sql = "INSERT INTO tasks(description, iscomplete, duedate) VALUES (:description, :iscomplete, :duedate)";
       this.id = (int) con.createQuery(sql, true)
         .addParameter("description", description)
         .addParameter("iscomplete", iscomplete)
+        .addParameter("duedate", duedate)
         .executeUpdate()
         .getKey();
     }
   }
+
+  // public static List<Task> sort() {
+  //   String sql = "SELECT * ORDER BY duedate WHERE iscomplete = false";
+  //   try(Connection con = DB.sql2o.open()) {
+  //     return con.createQuery(sql)
+  //     .executeAndFetch(Task.class);
+  //   }
+  // }
 
   public static Task find(int id) {
     try(Connection con = DB.sql2o.open()) {
@@ -99,7 +114,6 @@ public class Task {
       return task;
     }
   }
-
 
   public void addCategory(Category category) {
   try(Connection con = DB.sql2o.open()) {

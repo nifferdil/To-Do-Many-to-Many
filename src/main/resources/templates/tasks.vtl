@@ -13,9 +13,11 @@
     <form action="/tasks" method="post">
       <label for="description">Task Description</label>
       <input id="description" name="description" type="text">
-
+      <label for="duedate">Due By</label>
+          <input type="date" name="duedate">
       <button type="submit">Add task</button>
     </form>
+    <br>
 
     <table border="1" class="table table-striped">
       <th>Current Tasks:</th>
@@ -26,7 +28,7 @@
       <tbody>
       #foreach ($task in $tasks)
       <tr>
-        <td><a href="/tasks/$task.getId()">$task.getDescription()</a></td>
+        <td><a href="/tasks/$task.getId()">$task.getDescription()</a> Due on: $task.getDueDate()</td>
           <td>
             #if($task.getCategories())
               <ul>

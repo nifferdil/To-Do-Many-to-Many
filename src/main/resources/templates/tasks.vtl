@@ -1,16 +1,44 @@
 <h1>Task list!</h1>
 
-<p>Add a new task:</p>
+#if ($editTask)
+    <form action="/tasks/$editTask.getId()/edit" method="post">
+      <label for="description">Edit Task:</label>
+      <input id="description" name="description" type="text" value="$editTask.getDescription()">
 
-<form action="/tasks" method="post">
-  <label for="description">Task Description</label>
-  <input id="description" name="description" type="text">
+      <button type="submit">Edit task</button>
+    </form>
+#else
+    <p>Add a new task:</p>
 
-  <button type="submit">Add task</button>
-</form>
+    <form action="/tasks" method="post">
+      <label for="description">Task Description</label>
+      <input id="description" name="description" type="text">
 
-#foreach ($task in $tasks)
-  <li><a href="/tasks/$task.getId()">$task.getDescription()</a></li>
-#end
+      <button type="submit">Add task</button>
+    </form>
 
+    <table border="1">
+      <th>Current Tasks:</th>
+      <th>Completed Tasks:</th>
+      <tbody>
+      <tr>
+        <td>
+          <ol>
+          #foreach ($task in $tasks)
+            <li>
+              <a href="/tasks/$task.getId()">$task.getDescription()</a>
+              <a href="/tasks/$task.getId()/edit">Edit</a></li>
+              <a href="/tasks/$task.getId()/complete">Complete</a></li>
+          #end
+          </ol>
+        </td>
+          <td>
+            #foreach ($complete in $allCompleteTasks)
+            <li>$complete.getDescription()</li>
+            #end
+          </td>
+        </tr>
+    </tbody>
+  </table>
+  #end
 <p><a href='/'>Home</a></p>

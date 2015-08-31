@@ -5,6 +5,7 @@ import java.util.ArrayList;
 public class Task {
   private int id;
   private String description;
+  private boolean isComplete;
 
   public int getId() {
     return id;
@@ -14,8 +15,9 @@ public class Task {
     return description;
   }
 
-  public Task(String description) {
+  public Task(String description, boolean isComplete) {
     this.description = description;
+    this.isComplete = false;
   }
 
   @Override
@@ -28,6 +30,27 @@ public class Task {
              this.getId() == newTask.getId();
     }
   }
+
+  public static boolean isTaskComplete(){
+    return true;
+  }
+
+  public void complete(boolean isComplete) {
+    try(Connection con = DB.sql2o.open()) {
+      String sql = "UPDATE tasks SET iscomplete = true WHERE id = :id";
+      con.createQuery(sql)
+        .addParameter("iscomplete", isComplete)
+        .addParameter("id", id)
+        .executeUpdate();
+    }
+  }
+
+  public static List<Task> allCompletes() {
+      String sql = "SELECT id, description FROM tasks WHERE iscomplete = true";
+      try(Connection con = DB.sql2o.open()) {
+        return con.createQuery(sql).executeAndFetch(Task.class);
+      }
+    }
 
 
   public static List<Task> all() {
@@ -59,7 +82,7 @@ public class Task {
 
   public void update(String description) {
     try(Connection con = DB.sql2o.open()) {
-      String sql = "UPDATE tasks SET description = :description) WHERE id = :id";
+      String sql = "UPDATE tasks SET description = :description WHERE id = :id";
       con.createQuery(sql)
         .addParameter("description", description)
         .addParameter("id", id)

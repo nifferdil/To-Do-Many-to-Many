@@ -4,7 +4,7 @@
     <form action="/tasks/$editTask.getId()/edit" method="post">
       <label for="description">Edit Task:</label>
       <input id="description" name="description" type="text" value="$editTask.getDescription()">
-
+      <input type="date" name="duedate" value="$editTask.getDueDate()">
       <button type="submit">Edit task</button>
     </form>
 #else

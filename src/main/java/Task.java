@@ -21,7 +21,7 @@ public class Task {
     this.iscomplete = false;
     this.duedate = duedate;
   }
-  
+
   public String getDueDate(){
     return duedate;
   }
@@ -60,11 +60,12 @@ public class Task {
     }
   }
 
-  public void update(String description) {
+  public void update(String description, String duedate) {
     try(Connection con = DB.sql2o.open()) {
-      String sql = "UPDATE tasks SET description = :description WHERE id = :id";
+      String sql = "UPDATE tasks SET description = :description, duedate =:duedate WHERE id = :id";
       con.createQuery(sql)
         .addParameter("description", description)
+        .addParameter("duedate", duedate)
         .addParameter("id", id)
         .executeUpdate();
     }

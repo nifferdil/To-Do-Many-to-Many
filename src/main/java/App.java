@@ -23,7 +23,6 @@ public class App {
      model.put("allCompleteTasks", allCompleteTasks);
      List<Task> tasks = Task.all();
      model.put("tasks", tasks);
-
      model.put("allCategories", Category.all());
      model.put("template", "templates/tasks.vtl");
      return new ModelAndView(model, layout);
@@ -42,14 +41,10 @@ public class App {
      int id = Integer.parseInt(request.params("id"));
      Task editTask = Task.find(id);
      model.put("editTask", editTask);
-
      List<Task> allCompleteTasks = Task.allCompletes();
      model.put("allCompleteTasks", allCompleteTasks);
      List<Task> tasks = Task.all();
      model.put("tasks", tasks);
-
-
-
      model.put("allCategories", Category.all());
      model.put("template", "templates/tasks.vtl");
      return new ModelAndView(model, layout);
@@ -59,9 +54,7 @@ public class App {
     HashMap<String, Object> model = new HashMap<String, Object>();
     int id = Integer.parseInt(request.params("id"));
     Task completeTask = Task.find(id);
-
     completeTask.complete(completeTask.isTaskComplete());
-
     List<Task> allCompleteTasks = Task.allCompletes();
     model.put("allCompleteTasks", allCompleteTasks);
     List<Task> tasks = Task.all();
@@ -96,7 +89,8 @@ public class App {
     int id = Integer.parseInt(request.params("id"));
     Task editTask = Task.find(id);
     String description = request.queryParams("description");
-    editTask.update(description);
+    String duedate = request.queryParams("duedate");
+    editTask.update(description, duedate);
     List<Task> allCompleteTasks = Task.allCompletes();
     model.put("allCompleteTasks", allCompleteTasks);
     List<Task> tasks = Task.all();

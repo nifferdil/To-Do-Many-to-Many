@@ -5,7 +5,7 @@ import java.util.ArrayList;
 public class Task {
   private int id;
   private String description;
-  private boolean isComplete;
+  private boolean iscomplete;
 
   public int getId() {
     return id;
@@ -15,9 +15,9 @@ public class Task {
     return description;
   }
 
-  public Task(String description, boolean isComplete) {
+  public Task(String description, boolean iscomplete) {
     this.description = description;
-    this.isComplete = false;
+    this.iscomplete = false;
   }
 
   @Override
@@ -35,11 +35,30 @@ public class Task {
     return true;
   }
 
-  public void complete(boolean isComplete) {
+  public void complete(boolean iscomplete) {
     try(Connection con = DB.sql2o.open()) {
-      String sql = "UPDATE tasks SET iscomplete = true WHERE id = :id";
+      String sql = "UPDATE tasks SET iscomplete = :iscomplete WHERE id = :id";
       con.createQuery(sql)
-        .addParameter("iscomplete", isComplete)
+        .addParameter("iscomplete", iscomplete)
+        .addParameter("id", id)
+        .executeUpdate();
+    }
+  }
+
+  public void delete(int id) {
+    try(Connection con = DB.sql2o.open()) {
+      String sql = "DELETE FROM tasks WHERE id = :id";
+      con.createQuery(sql)
+        .addParameter("id", id)
+        .executeUpdate();
+    }
+  }
+
+  public void update(String description) {
+    try(Connection con = DB.sql2o.open()) {
+      String sql = "UPDATE tasks SET description = :description WHERE id = :id";
+      con.createQuery(sql)
+        .addParameter("description", description)
         .addParameter("id", id)
         .executeUpdate();
     }
@@ -54,7 +73,7 @@ public class Task {
 
 
   public static List<Task> all() {
-    String sql = "SELECT id, description FROM tasks";
+    String sql = "SELECT id, description FROM tasks WHERE iscomplete = false";
     try(Connection con = DB.sql2o.open()) {
       return con.createQuery(sql).executeAndFetch(Task.class);
     }
@@ -62,9 +81,10 @@ public class Task {
 
   public void save() {
     try(Connection con = DB.sql2o.open()) {
-      String sql = "INSERT INTO tasks(description) VALUES (:description)";
+      String sql = "INSERT INTO tasks(description, iscomplete) VALUES (:description, :iscomplete)";
       this.id = (int) con.createQuery(sql, true)
         .addParameter("description", description)
+        .addParameter("iscomplete", iscomplete)
         .executeUpdate()
         .getKey();
     }
@@ -80,15 +100,6 @@ public class Task {
     }
   }
 
-  public void update(String description) {
-    try(Connection con = DB.sql2o.open()) {
-      String sql = "UPDATE tasks SET description = :description WHERE id = :id";
-      con.createQuery(sql)
-        .addParameter("description", description)
-        .addParameter("id", id)
-        .executeUpdate();
-    }
-  }
 
   public void addCategory(Category category) {
   try(Connection con = DB.sql2o.open()) {

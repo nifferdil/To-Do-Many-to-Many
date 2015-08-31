@@ -3,11 +3,13 @@
 <p>Add a new category:</p>
 
 <form action="/categories" method="post">
-  <label for="name">Task Description</label>
+  <label for="name">Add a category:</label>
   <input id="name" name="name" type="text">
 
   <button type="submit">Add category</button>
 </form>
+<br>
+Categories:
 <ol>
 #foreach ($category in $categories)
   <li><a href="/categories/$category.getId()">$category.getName()</a></li>

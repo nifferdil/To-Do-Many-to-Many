@@ -47,7 +47,7 @@ public class Category {
 
   public static Category find(int id) {
     try(Connection con = DB.sql2o.open()) {
-      String sql = "SELECT * FROM Categories where id=:id";
+      String sql = "SELECT * FROM Categories WHERE id=:id";
       Category Category = con.createQuery(sql)
         .addParameter("id", id)
         .executeAndFetchFirst(Category.class);

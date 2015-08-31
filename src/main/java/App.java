@@ -23,6 +23,8 @@ public class App {
      model.put("allCompleteTasks", allCompleteTasks);
      List<Task> tasks = Task.all();
      model.put("tasks", tasks);
+
+     model.put("allCategories", Category.all());
      model.put("template", "templates/tasks.vtl");
      return new ModelAndView(model, layout);
    }, new VelocityTemplateEngine());
@@ -40,6 +42,14 @@ public class App {
      int id = Integer.parseInt(request.params("id"));
      Task editTask = Task.find(id);
      model.put("editTask", editTask);
+
+     List<Task> allCompleteTasks = Task.allCompletes();
+     model.put("allCompleteTasks", allCompleteTasks);
+     List<Task> tasks = Task.all();
+     model.put("tasks", tasks);
+
+
+
      model.put("allCategories", Category.all());
      model.put("template", "templates/tasks.vtl");
      return new ModelAndView(model, layout);
@@ -64,12 +74,31 @@ public class App {
     return new ModelAndView(model, layout);
   }, new VelocityTemplateEngine());
 
+  get("/tasks/:id/delete", (request,response) -> {
+   HashMap<String, Object> model = new HashMap<String, Object>();
+   int id = Integer.parseInt(request.params("id"));
+   Task deleteTask = Task.find(id);
+
+   deleteTask.delete(id);
+
+   List<Task> allCompleteTasks = Task.allCompletes();
+   model.put("allCompleteTasks", allCompleteTasks);
+   List<Task> tasks = Task.all();
+   model.put("tasks", tasks);
+
+   model.put("allCategories", Category.all());
+   model.put("template", "templates/tasks.vtl");
+   return new ModelAndView(model, layout);
+ }, new VelocityTemplateEngine());
+
    post("/tasks/:id/edit", (request,response) -> {
     HashMap<String, Object> model = new HashMap<String, Object>();
     int id = Integer.parseInt(request.params("id"));
     Task editTask = Task.find(id);
     String description = request.queryParams("description");
     editTask.update(description);
+    List<Task> allCompleteTasks = Task.allCompletes();
+    model.put("allCompleteTasks", allCompleteTasks);
     List<Task> tasks = Task.all();
     model.put("tasks", tasks);
     model.put("allCategories", Category.all());

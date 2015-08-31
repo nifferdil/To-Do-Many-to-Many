@@ -17,28 +17,44 @@
       <button type="submit">Add task</button>
     </form>
 
-    <table border="1">
+    <table border="1" class="table table-striped">
       <th>Current Tasks:</th>
-      <th>Completed Tasks:</th>
+      <th>Listed in Categories:</th>
+      <th>Edit:</th>
+      <th>Complete:</th>
+      <th>Delete:</th>
       <tbody>
+      #foreach ($task in $tasks)
       <tr>
-        <td>
-          <ol>
-          #foreach ($task in $tasks)
-            <li>
-              <a href="/tasks/$task.getId()">$task.getDescription()</a>
-              <a href="/tasks/$task.getId()/edit">Edit</a></li>
-              <a href="/tasks/$task.getId()/complete">Complete</a></li>
-          #end
-          </ol>
-        </td>
+        <td><a href="/tasks/$task.getId()">$task.getDescription()</a></td>
           <td>
-            #foreach ($complete in $allCompleteTasks)
-            <li>$complete.getDescription()</li>
+            #if($task.getCategories())
+              <ul>
+                #foreach($category in $task.getCategories())
+                  <li><a href="/categories/$category.getId()">$category.getName()</a></li>
+                #end
+              </ul>
             #end
           </td>
+          <td><a href="/tasks/$task.getId()/edit"><span class="glyphicon glyphicon-pencil"></span></a>
+          </td>
+          <td><a href="/tasks/$task.getId()/complete"><span class="glyphicon glyphicon-ok"></span></a></td>
+          <td><a href="/tasks/$task.getId()/delete"><span class="glyphicon glyphicon-trash"></span></a></td>
         </tr>
+        #end
     </tbody>
+  </table>
+<table class="table table-striped">
+  <th>Completed Tasks:</th>
+  <tbody>
+    <tr>
+      <td>
+        #foreach ($complete in $allCompleteTasks)
+        <li>$complete.getDescription()</li>
+        #end
+      </td>
+    </tr>
+  </tbody>
   </table>
   #end
 <p><a href='/'>Home</a></p>
